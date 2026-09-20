@@ -1,0 +1,22 @@
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Editor & IDE Directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs & Temporary Files
+*.log
+scratch/
+tmp/
+temp/
+
+# Environment / Secret Configurations (jika nanti ada credential khusus)
+.env
+config.local.php
