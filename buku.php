@@ -4,9 +4,9 @@ include 'navbar.php';
 
 $cari = isset($_GET['cari']) ? $_GET['cari'] : '';
 if ($cari != '') {
-    $query = mysqli_query($conn, "SELECT * FROM buku WHERE is_delete=0 AND (judul LIKE '%$cari%' OR kode_buku LIKE '%$cari%') ORDER BY id DESC");
+    $query = mysqli_query($conn, "SELECT * FROM buku WHERE judul LIKE '%$cari%' OR kode_buku LIKE '%$cari%' ORDER BY id DESC");
 } else {
-    $query = mysqli_query($conn, "SELECT * FROM buku WHERE is_delete=0 ORDER BY id DESC");
+    $query = mysqli_query($conn, "SELECT * FROM buku ORDER BY id DESC");
 }
 ?>
 

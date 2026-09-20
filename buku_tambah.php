@@ -8,8 +8,8 @@ if (isset($_POST['simpan'])) {
     $pengarang = $_POST['pengarang'];
     $stok      = (int)$_POST['stok'];
 
-    $sql = "INSERT INTO buku (kode_buku, judul, pengarang, stok, is_delete) 
-            VALUES ('$kode_buku', '$judul', '$pengarang', '$stok', 0)";
+    $sql = "INSERT INTO buku (kode_buku, judul, pengarang, stok) 
+            VALUES ('$kode_buku', '$judul', '$pengarang', '$stok')";
     
     if (mysqli_query($conn, $sql)) {
         header("Location: buku.php");

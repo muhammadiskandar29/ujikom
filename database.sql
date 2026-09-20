@@ -21,14 +21,13 @@ CREATE TABLE IF NOT EXISTS `anggota` (
   `nama` VARCHAR(100) NOT NULL,
   `jenis_kelamin` ENUM('Laki-laki', 'Perempuan') NOT NULL DEFAULT 'Laki-laki',
   `tipe_anggota` ENUM('Admin', 'Staff') NOT NULL DEFAULT 'Staff',
-  `alamat` TEXT NULL,
-  `is_delete` TINYINT(1) NOT NULL DEFAULT 0
+  `alamat` TEXT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `anggota` (`nomor_anggota`, `nama`, `jenis_kelamin`, `tipe_anggota`, `alamat`, `is_delete`) VALUES
-('ANG-001', 'Ahmad Pratama', 'Laki-laki', 'Admin', 'Bandung', 0),
-('ANG-002', 'Siti Nurhaliza', 'Perempuan', 'Staff', 'Cimahi', 0),
-('ANG-003', 'Budi Santoso', 'Laki-laki', 'Staff', 'Bandung', 0)
+INSERT INTO `anggota` (`nomor_anggota`, `nama`, `jenis_kelamin`, `tipe_anggota`, `alamat`) VALUES
+('ANG-001', 'Ahmad Pratama', 'Laki-laki', 'Admin', 'Bandung'),
+('ANG-002', 'Siti Nurhaliza', 'Perempuan', 'Staff', 'Cimahi'),
+('ANG-003', 'Budi Santoso', 'Laki-laki', 'Staff', 'Bandung')
 ON DUPLICATE KEY UPDATE `nomor_anggota`=`nomor_anggota`;
 
 -- 3. Tabel Buku (Master Data Buku)
@@ -37,14 +36,13 @@ CREATE TABLE IF NOT EXISTS `buku` (
   `kode_buku` VARCHAR(20) NOT NULL UNIQUE,
   `judul` VARCHAR(255) NOT NULL,
   `pengarang` VARCHAR(100) NOT NULL,
-  `stok` INT NOT NULL DEFAULT 0,
-  `is_delete` TINYINT(1) NOT NULL DEFAULT 0
+  `stok` INT NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `buku` (`kode_buku`, `judul`, `pengarang`, `stok`, `is_delete`) VALUES
-('BK-001', 'Pemrograman Web PHP Native', 'Budi Raharjo', 5, 0),
-('BK-002', 'Dasar Jaringan Komputer', 'Iwan Sofana', 4, 0),
-('BK-003', 'Desain Grafis Pemula', 'Rian Kurniawan', 3, 0)
+INSERT INTO `buku` (`kode_buku`, `judul`, `pengarang`, `stok`) VALUES
+('BK-001', 'Pemrograman Web PHP Native', 'Budi Raharjo', 5),
+('BK-002', 'Dasar Jaringan Komputer', 'Iwan Sofana', 4),
+('BK-003', 'Desain Grafis Pemula', 'Rian Kurniawan', 3)
 ON DUPLICATE KEY UPDATE `kode_buku`=`kode_buku`;
 
 -- 4. Tabel Peminjaman (Transaksi: Batas 3 Hari, Denda Rp 500/hari)
@@ -57,5 +55,6 @@ CREATE TABLE IF NOT EXISTS `peminjaman` (
   `tanggal_kembali` DATE NULL,
   `status` ENUM('Dipinjam', 'Dikembalikan') NOT NULL DEFAULT 'Dipinjam',
   `denda` INT NOT NULL DEFAULT 0,
-  `is_delete` TINYINT(1) NOT NULL DEFAULT 0
+  CONSTRAINT `fk_pinjam_anggota` FOREIGN KEY (`id_anggota`) REFERENCES `anggota` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `fk_pinjam_buku` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

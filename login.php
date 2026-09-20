@@ -10,8 +10,7 @@ if (isset($_SESSION['user'])) {
 $pesan = "";
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
-    $password = md5($_POST['password']); // Hashing MD5 sederhana & mudah diingat
-
+    $password = md5($_POST['password']);
     $query = mysqli_query($conn, "SELECT * FROM user WHERE username='$username' AND password='$password'");
     if (mysqli_num_rows($query) > 0) {
         $_SESSION['user'] = mysqli_fetch_assoc($query);
@@ -49,9 +48,6 @@ if (isset($_POST['login'])) {
         <button type="submit" name="login" class="btn btn-primary w-100">Masuk</button>
     </form>
 
-    <div class="text-muted small text-center mt-3">
-        User: <b>admin</b> | Pass: <b>admin</b>
-    </div>
 </div>
 
 </body>

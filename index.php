@@ -4,9 +4,9 @@ include 'navbar.php';
 
 $cari = isset($_GET['cari']) ? $_GET['cari'] : '';
 if ($cari != '') {
-    $query = mysqli_query($conn, "SELECT * FROM anggota WHERE is_delete=0 AND (nama LIKE '%$cari%' OR nomor_anggota LIKE '%$cari%') ORDER BY id DESC");
+    $query = mysqli_query($conn, "SELECT * FROM anggota WHERE nama LIKE '%$cari%' OR nomor_anggota LIKE '%$cari%' ORDER BY id DESC");
 } else {
-    $query = mysqli_query($conn, "SELECT * FROM anggota WHERE is_delete=0 ORDER BY id DESC");
+    $query = mysqli_query($conn, "SELECT * FROM anggota ORDER BY id DESC");
 }
 ?>
 

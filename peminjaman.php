@@ -6,7 +6,6 @@ $query = mysqli_query($conn, "SELECT p.*, a.nama AS nama_anggota, b.judul AS jud
                               FROM peminjaman p
                               JOIN anggota a ON p.id_anggota = a.id
                               JOIN buku b ON p.id_buku = b.id
-                              WHERE p.is_delete=0 
                               ORDER BY p.id DESC");
 ?>
 

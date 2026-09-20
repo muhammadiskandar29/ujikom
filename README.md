@@ -17,8 +17,8 @@ Aplikasi Perpustakaan berbasis **PHP Native** dan **Bootstrap 5** yang dirancang
    - Pinjam buku: Stok buku berkurang 1, batas pinjam 3 hari.
    - Kembalikan buku: Stok buku bertambah 1.
    - **Aturan Denda**: Jika pengembalian $> 3$ hari, dikenakan denda **Rp 500 / hari keterlambatan**.
-5. **Soft Delete (`is_delete`)**:
-   - Data tidak terhapus permanen dari MySQL, hanya diubah `is_delete = 1`.
+5. **Hard Delete**:
+   - Data terhapus langsung dan permanen dari baris tabel MySQL (`DELETE FROM`).
 
 ---
 
@@ -36,12 +36,12 @@ ujikom/
 ├── index.php            # Tampil & cari data anggota
 ├── anggota_tambah.php   # Tambah anggota (tanpa password)
 ├── anggota_edit.php     # Edit data anggota
-├── anggota_hapus.php    # Soft delete anggota (6 baris)
+├── anggota_hapus.php    # Hard delete anggota (6 baris)
 │
 ├── buku.php             # Tampil & cari data buku
 ├── buku_tambah.php      # Tambah buku baru
 ├── buku_edit.php        # Edit data buku
-├── buku_hapus.php       # Soft delete buku (6 baris)
+├── buku_hapus.php       # Hard delete buku (6 baris)
 │
 ├── peminjaman.php       # Tampil daftar transaksi
 ├── pinjam_tambah.php    # Form pinjam (potong stok)

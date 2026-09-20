@@ -11,16 +11,16 @@ if (isset($_POST['pinjam'])) {
 
     mysqli_query($conn, "UPDATE buku SET stok = stok - 1 WHERE id='$id_buku'");
 
-    $sql = "INSERT INTO peminjaman (id_anggota, id_buku, tanggal_pinjam, jatuh_tempo, status, is_delete) 
-            VALUES ('$id_anggota', '$id_buku', '$tanggal_pinjam', '$jatuh_tempo', 'Dipinjam', 0)";
+    $sql = "INSERT INTO peminjaman (id_anggota, id_buku, tanggal_pinjam, jatuh_tempo, status) 
+            VALUES ('$id_anggota', '$id_buku', '$tanggal_pinjam', '$jatuh_tempo', 'Dipinjam')";
     mysqli_query($conn, $sql);
 
     header("Location: peminjaman.php");
     exit();
 }
 
-$q_anggota = mysqli_query($conn, "SELECT * FROM anggota WHERE is_delete=0 ORDER BY nama ASC");
-$q_buku    = mysqli_query($conn, "SELECT * FROM buku WHERE is_delete=0 AND stok > 0 ORDER BY judul ASC");
+$q_anggota = mysqli_query($conn, "SELECT * FROM anggota ORDER BY nama ASC");
+$q_buku    = mysqli_query($conn, "SELECT * FROM buku WHERE stok > 0 ORDER BY judul ASC");
 ?>
 
 <div class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">

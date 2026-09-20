@@ -3,7 +3,7 @@ include 'koneksi.php';
 include 'navbar.php';
 
 $id = (int)$_GET['id'];
-$query = mysqli_query($conn, "SELECT * FROM anggota WHERE id='$id' AND is_delete=0");
+$query = mysqli_query($conn, "SELECT * FROM anggota WHERE id='$id'");
 $anggota = mysqli_fetch_assoc($query);
 
 if (isset($_POST['update'])) {

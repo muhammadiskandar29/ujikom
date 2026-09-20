@@ -9,8 +9,8 @@ if (isset($_POST['simpan'])) {
     $tipe_anggota  = $_POST['tipe_anggota'];
     $alamat        = $_POST['alamat'];
 
-    $sql = "INSERT INTO anggota (nomor_anggota, nama, jenis_kelamin, tipe_anggota, alamat, is_delete) 
-            VALUES ('$nomor_anggota', '$nama', '$jenis_kelamin', '$tipe_anggota', '$alamat', 0)";
+    $sql = "INSERT INTO anggota (nomor_anggota, nama, jenis_kelamin, tipe_anggota, alamat) 
+            VALUES ('$nomor_anggota', '$nama', '$jenis_kelamin', '$tipe_anggota', '$alamat')";
     
     if (mysqli_query($conn, $sql)) {
         header("Location: index.php");
