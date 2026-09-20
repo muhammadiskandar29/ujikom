@@ -78,9 +78,11 @@ if (isset($_POST['update'])) {
                     <input type="password" name="password" class="form-control" placeholder="Kosongkan jika tidak diganti">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label d-block">Jenis Kelamin</label>
-                    <input type="radio" name="jenis_kelamin" value="Laki-laki" <?= ($anggota['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki &nbsp;
-                    <input type="radio" name="jenis_kelamin" value="Perempuan" <?= ($anggota['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan
+                    <label class="form-label">Jenis Kelamin</label>
+                    <select name="jenis_kelamin" class="form-select" required>
+                        <option value="Laki-laki" <?= ($anggota['jenis_kelamin'] == 'Laki-laki') ? 'selected' : ''; ?>>Laki-laki</option>
+                        <option value="Perempuan" <?= ($anggota['jenis_kelamin'] == 'Perempuan') ? 'selected' : ''; ?>>Perempuan</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tipe Anggota</label>

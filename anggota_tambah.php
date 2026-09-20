@@ -54,9 +54,11 @@ if (isset($_POST['simpan'])) {
                     <input type="password" name="password" class="form-control" placeholder="Kosongkan jika ingin default 123456">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label d-block">Jenis Kelamin</label>
-                    <input type="radio" name="jenis_kelamin" value="Laki-laki" checked> Laki-laki &nbsp;
-                    <input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan
+                    <label class="form-label">Jenis Kelamin</label>
+                    <select name="jenis_kelamin" class="form-select" required>
+                        <option value="Laki-laki" selected>Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tipe Anggota</label>

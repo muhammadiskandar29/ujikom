@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `anggota` (
   `nomor_anggota` VARCHAR(20) NOT NULL UNIQUE,
   `nama` VARCHAR(100) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `jenis_kelamin` ENUM('Laki-laki', 'Perempuan') NOT NULL,
+  `jenis_kelamin` ENUM('Laki-laki', 'Perempuan') NOT NULL DEFAULT 'Laki-laki',
   `tipe_anggota` ENUM('Admin', 'Staff') NOT NULL DEFAULT 'Staff',
   `alamat` TEXT NULL,
   `is_delete` TINYINT(1) NOT NULL DEFAULT 0,
