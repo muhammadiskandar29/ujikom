@@ -8,14 +8,11 @@ $data = mysqli_fetch_assoc($query);
 if ($data) {
     $tgl_kembali = date('Y-m-d');
     
-    // Hitung denda: jika tanggal kembali > jatuh tempo, denda = telat * Rp 500
-    $selisih = (strtotime($tgl_kembali) - strtotime($data['jatuh_tempo'])) / 86400; // 86400 detik = 1 hari
+    $selisih = (strtotime($tgl_kembali) - strtotime($data['jatuh_tempo'])) / 86400;
     $denda = ($selisih > 0) ? $selisih * 500 : 0;
 
-    // 1. Tambah kembali stok buku
     mysqli_query($conn, "UPDATE buku SET stok = stok + 1 WHERE id='{$data['id_buku']}'");
 
-    // 2. Update status transaksi
     mysqli_query($conn, "UPDATE peminjaman SET 
                             tanggal_kembali='$tgl_kembali', 
                             status='Dikembalikan', 

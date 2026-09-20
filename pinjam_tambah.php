@@ -7,13 +7,10 @@ if (isset($_POST['pinjam'])) {
     $id_buku        = $_POST['id_buku'];
     $tanggal_pinjam = $_POST['tanggal_pinjam'];
 
-    // Batas pinjam 3 hari
     $jatuh_tempo    = date('Y-m-d', strtotime($tanggal_pinjam . ' + 3 days'));
 
-    // Kurangi stok buku 1
     mysqli_query($conn, "UPDATE buku SET stok = stok - 1 WHERE id='$id_buku'");
 
-    // Simpan transaksi
     $sql = "INSERT INTO peminjaman (id_anggota, id_buku, tanggal_pinjam, jatuh_tempo, status, is_delete) 
             VALUES ('$id_anggota', '$id_buku', '$tanggal_pinjam', '$jatuh_tempo', 'Dipinjam', 0)";
     mysqli_query($conn, $sql);

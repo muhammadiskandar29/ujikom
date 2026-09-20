@@ -10,7 +10,7 @@ if (isset($_SESSION['user'])) {
 $pesan = "";
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']); // Hashing MD5 sederhana & mudah diingat
 
     $query = mysqli_query($conn, "SELECT * FROM user WHERE username='$username' AND password='$password'");
     if (mysqli_num_rows($query) > 0) {

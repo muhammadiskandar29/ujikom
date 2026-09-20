@@ -6,12 +6,12 @@ USE `db_ujikom`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `username` VARCHAR(50) NOT NULL UNIQUE,
-  `password` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   `nama` VARCHAR(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `user` (`username`, `password`, `nama`) VALUES
-('admin', 'admin', 'Super Admin')
+('admin', MD5('admin'), 'Super Admin')
 ON DUPLICATE KEY UPDATE `username`=`username`;
 
 -- 2. Tabel Anggota (Murni Master Data Peminjam, Tanpa Password)
