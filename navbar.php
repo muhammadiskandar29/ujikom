@@ -8,6 +8,7 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -23,10 +24,11 @@ if (!isset($_SESSION['user'])) {
 <!-- Navbar Sederhana -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="index.php">SIM Perpus</a>
+        <a class="navbar-brand fw-bold" href="index.php">Perpustakaan</a>
         <div class="navbar-nav me-auto">
-            <a class="nav-link" href="index.php">Data Siswa</a>
-            <a class="nav-link" href="buku.php">Data Buku</a>
+            <a class="nav-link <?= in_array($current_page, ['index.php', 'anggota_tambah.php', 'anggota_edit.php']) ? 'active fw-bold' : ''; ?>" href="index.php">Data Anggota</a>
+            <a class="nav-link <?= in_array($current_page, ['buku.php', 'buku_tambah.php', 'buku_edit.php']) ? 'active fw-bold' : ''; ?>" href="buku.php">Data Buku</a>
+            <a class="nav-link <?= in_array($current_page, ['peminjaman.php', 'pinjam_tambah.php']) ? 'active fw-bold' : ''; ?>" href="peminjaman.php">Transaksi Peminjaman</a>
         </div>
         <div class="d-flex align-items-center text-white gap-3">
             <span>Halo, <b><?= htmlspecialchars($_SESSION['user']['nama']); ?></b></span>

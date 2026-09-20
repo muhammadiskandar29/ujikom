@@ -4,28 +4,28 @@ include 'navbar.php';
 
 $pesan = "";
 
-// Proses Simpan Data
+// Proses Tambah Anggota
 if (isset($_POST['simpan'])) {
-    $nis           = mysqli_real_escape_string($conn, trim($_POST['nis']));
+    $nomor_anggota = mysqli_real_escape_string($conn, trim($_POST['nomor_anggota']));
     $nama          = mysqli_real_escape_string($conn, trim($_POST['nama']));
     $password      = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : password_hash('123456', PASSWORD_DEFAULT);
     $jenis_kelamin = $_POST['jenis_kelamin'];
-    $jurusan       = $_POST['jurusan'];
+    $tipe_anggota  = $_POST['tipe_anggota'];
     $alamat        = mysqli_real_escape_string($conn, trim($_POST['alamat']));
     $created_by    = $_SESSION['user']['nama'];
 
-    // Cek duplikasi NIS
-    $cek = mysqli_query($conn, "SELECT id FROM siswa WHERE nis = '$nis'");
+    // Cek duplikasi nomor anggota
+    $cek = mysqli_query($conn, "SELECT id FROM anggota WHERE nomor_anggota = '$nomor_anggota'");
     if (mysqli_num_rows($cek) > 0) {
-        $pesan = "NIS sudah terdaftar!";
+        $pesan = "Nomor Anggota sudah terdaftar!";
     } else {
-        $query = "INSERT INTO siswa (nis, nama, password, jenis_kelamin, jurusan, alamat, is_delete, created_by) 
-                  VALUES ('$nis', '$nama', '$password', '$jenis_kelamin', '$jurusan', '$alamat', 0, '$created_by')";
+        $query = "INSERT INTO anggota (nomor_anggota, nama, password, jenis_kelamin, tipe_anggota, alamat, is_delete, created_by) 
+                  VALUES ('$nomor_anggota', '$nama', '$password', '$jenis_kelamin', '$tipe_anggota', '$alamat', 0, '$created_by')";
         if (mysqli_query($conn, $query)) {
-            echo "<script>alert('Data berhasil disimpan!'); window.location='index.php';</script>";
+            echo "<script>alert('Anggota berhasil ditambahkan!'); window.location='index.php';</script>";
             exit();
         } else {
-            $pesan = "Gagal menyimpan data!";
+            $pesan = "Gagal menyimpan data anggota!";
         }
     }
 }
@@ -34,7 +34,7 @@ if (isset($_POST['simpan'])) {
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card shadow-sm p-4">
-            <h4 class="mb-3">Tambah Siswa</h4>
+            <h4 class="mb-3">Tambah Anggota Baru</h4>
 
             <?php if (!empty($pesan)): ?>
                 <div class="alert alert-danger py-2"><?= $pesan; ?></div>
@@ -42,16 +42,16 @@ if (isset($_POST['simpan'])) {
 
             <form method="POST">
                 <div class="mb-3">
-                    <label class="form-label">NIS</label>
-                    <input type="text" name="nis" class="form-control" required>
+                    <label class="form-label">Nomor Anggota</label>
+                    <input type="text" name="nomor_anggota" class="form-control" placeholder="Contoh: ANG-004" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nama Lengkap (User Login)</label>
                     <input type="text" name="nama" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Password (Default: 123456)</label>
-                    <input type="password" name="password" class="form-control" placeholder="Kosongkan jika default 123456">
+                    <label class="form-label">Password Akun (Default: 123456)</label>
+                    <input type="password" name="password" class="form-control" placeholder="Kosongkan jika ingin default 123456">
                 </div>
                 <div class="mb-3">
                     <label class="form-label d-block">Jenis Kelamin</label>
@@ -59,11 +59,10 @@ if (isset($_POST['simpan'])) {
                     <input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Jurusan</label>
-                    <select name="jurusan" class="form-select" required>
-                        <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak (RPL)</option>
-                        <option value="Teknik Komputer & Jaringan">Teknik Komputer & Jaringan (TKJ)</option>
-                        <option value="Multimedia">Multimedia (MM)</option>
+                    <label class="form-label">Tipe Anggota</label>
+                    <select name="tipe_anggota" class="form-select" required>
+                        <option value="Staff" selected>Staff</option>
+                        <option value="Admin">Admin</option>
                     </select>
                 </div>
                 <div class="mb-3">

@@ -10,8 +10,8 @@ if (!isset($_SESSION['user'])) {
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $updated_by = $_SESSION['user']['nama'];
 
-// Soft Delete (hanya ubah is_delete menjadi 1)
-$query = "UPDATE siswa SET is_delete = 1, updated_by = '$updated_by', updated_at = NOW() WHERE id = '$id'";
+// Soft delete anggota
+$query = "UPDATE anggota SET is_delete = 1, updated_by = '$updated_by', updated_at = NOW() WHERE id = '$id'";
 mysqli_query($conn, $query);
 
 // Jika menghapus akun sendiri, logout otomatis
@@ -21,5 +21,5 @@ if ($_SESSION['user']['id'] == $id) {
     exit();
 }
 
-echo "<script>alert('Data berhasil dihapus (Soft Delete)!'); window.location='index.php';</script>";
+echo "<script>alert('Data anggota berhasil dihapus (Soft Delete)!'); window.location='index.php';</script>";
 ?>

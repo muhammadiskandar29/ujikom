@@ -1,37 +1,53 @@
-# SIM Perpustakaan Siswa (CRUD PHP Native & Bootstrap)
+# SIM Perpustakaan (PHP Native & Bootstrap)
 
-Project CRUD standar sederhana yang sangat mudah dipelajari untuk pemula maupun ujian kompetensi (Ujikom).
+Aplikasi Perpustakaan sederhana berbasis **PHP Native** dan **Bootstrap 5**, dirancang khusus untuk pemula dan standar Ujikom dengan kode yang sangat bersih, mudah dipelajari, dan langsung to-the-point.
 
 ---
 
 ## 🚀 Fitur Utama
-1. **Login Session**: Login dengan Nama Siswa & Password (default: `123456`).
-2. **Master Siswa**: Tambah, Tampil, Cari, Edit, dan Hapus Siswa.
-3. **Master Buku**: Tambah, Tampil, Cari, Edit, dan Hapus Buku (stok siap untuk transaksi).
-4. **Soft Delete (`is_delete`)**: Data tidak hilang permanen, hanya statusnya diubah menjadi `1`.
-5. **Audit Trail**: Mencatat pembuat (`created_by`, `created_at`) dan pengubah (`updated_by`, `updated_at`).
+
+1. **Login Session**:
+   - Login menggunakan **Nama Anggota** dan Password (default: `123456`).
+2. **Master Data Anggota**:
+   - Menampilkan, mencari, menambah, mengedit, dan menghapus (soft delete) anggota perpustakaan.
+3. **Master Data Buku**:
+   - Menampilkan, mencari, menambah, mengedit, dan menghapus (soft delete) buku perpustakaan lengkap dengan jumlah stok.
+4. **Transaksi Peminjaman & Pengembalian Buku**:
+   - Anggota dapat meminjam buku yang tersedia (otomatis memotong stok buku).
+   - Batas maksimal waktu peminjaman adalah **3 hari**.
+   - **Aturan Denda**: Jika pengembalian melewati 3 hari, sistem otomatis mengenakan **denda Rp 500 per hari keterlambatan**.
+   - Saat buku dikembalikan, stok buku otomatis bertambah kembali.
+5. **Soft Delete (`is_delete`)**:
+   - Data yang dihapus tidak langsung hilang permanen dari database, melainkan ditandai `is_delete = 1`.
+6. **Audit Trail**:
+   - Mencatat waktu dan user yang membuat (`created_at`, `created_by`) serta yang mengubah/menghapus (`updated_at`, `updated_by`).
 
 ---
 
-## 📁 Struktur File (Sangat Ringkas)
+## 📁 Struktur File di Root (Sangat Ringkas)
+
 ```text
 ujikom/
-├── koneksi.php          # Koneksi MySQLi
-├── navbar.php           # Navigasi & pengecekan login
-├── database.sql         # File SQL database db_ujikom
+├── koneksi.php          # Koneksi MySQLi sederhana
+├── navbar.php           # Navigasi & pengecekan login session
+├── database.sql         # Skema database & data contoh
 │
-├── login.php            # Halaman login (form + proses langsung)
+├── login.php            # Halaman login anggota
 ├── logout.php           # Logout session
 │
-├── index.php            # Data Siswa (Tampil & Cari)
-├── tambah.php           # Tambah Siswa (Form + Simpan)
-├── edit.php             # Edit Siswa (Form + Update)
-├── hapus.php            # Hapus Siswa (Soft Delete)
+├── index.php            # Master Data Anggota (Tampil & Cari)
+├── anggota_tambah.php   # Tambah Anggota Baru
+├── anggota_edit.php     # Edit Data Anggota
+├── anggota_hapus.php    # Soft Delete Anggota
 │
-├── buku.php             # Data Buku (Tampil & Cari)
-├── buku_tambah.php      # Tambah Buku (Form + Simpan)
-├── buku_edit.php        # Edit Buku (Form + Update)
-├── buku_hapus.php       # Hapus Buku (Soft Delete)
+├── buku.php             # Master Data Buku (Tampil & Cari)
+├── buku_tambah.php      # Tambah Buku Baru
+├── buku_edit.php        # Edit Data Buku
+├── buku_hapus.php       # Soft Delete Buku
+│
+├── peminjaman.php       # Daftar Transaksi Peminjaman & Pengembalian
+├── pinjam_tambah.php    # Form Transaksi Peminjaman (Potong Stok)
+├── pinjam_kembali.php   # Proses Pengembalian Buku (Hitung Denda & Tambah Stok)
 │
 ├── .gitignore           # File ignore Git
 └── README.md            # Dokumentasi ini
@@ -40,15 +56,20 @@ ujikom/
 ---
 
 ## 🔑 Akun Login Uji Coba
-| Nama Siswa (Username) | Password |
-| :--- | :--- |
-| **Ahmad Pratama** | `123456` |
-| **Siti Nurhaliza** | `123456` |
-| **Budi Santoso** | `123456` |
+
+| Nama Anggota (User) | Password | Tipe (ENUM) |
+| :--- | :--- | :--- |
+| **Ahmad Pratama** | `123456` | Admin |
+| **Siti Nurhaliza** | `123456` | Staff |
+| **Budi Santoso** | `123456` | Staff |
 
 ---
 
 ## 🛠️ Cara Menjalankan
-1. Nyalakan **Apache** dan **MySQL** di XAMPP.
-2. Buka [http://localhost/phpmyadmin](http://localhost/phpmyadmin) dan import file `database.sql`.
-3. Buka browser ke: [http://localhost/ujikom](http://localhost/ujikom)
+
+1. Jalankan modul **Apache** dan **MySQL** di XAMPP Control Panel.
+2. Buka [http://localhost/phpmyadmin](http://localhost/phpmyadmin) lalu import file `database.sql`.
+3. Buka aplikasi di browser:
+   ```text
+   http://localhost/ujikom
+   ```
