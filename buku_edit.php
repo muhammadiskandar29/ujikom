@@ -18,39 +18,37 @@ if (isset($_POST['update'])) {
                 pengarang='$pengarang', 
                 stok='$stok' 
             WHERE id='$id'";
-    
-    if (mysqli_query($conn, $sql)) {
+    $update = mysqli_query($conn, $sql);
+
+    if ($update) {
         header("Location: buku.php");
-        exit();
     } else {
         echo "<script>alert('Gagal update data!');</script>";
     }
 }
 ?>
 
-<div class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
-    <h4 class="mb-3">Edit Data Buku</h4>
-    <form method="POST">
-        <div class="mb-3">
-            <label>Kode Buku</label>
-            <input type="text" name="kode_buku" class="form-control" value="<?php echo $data['kode_buku']; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label>Judul Buku</label>
-            <input type="text" name="judul" class="form-control" value="<?php echo $data['judul']; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label>Pengarang</label>
-            <input type="text" name="pengarang" class="form-control" value="<?php echo $data['pengarang']; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label>Stok</label>
-            <input type="number" name="stok" class="form-control" min="0" value="<?php echo $data['stok']; ?>" required>
-        </div>
-        <button type="submit" name="update" class="btn btn-warning">Update</button>
-        <a href="buku.php" class="btn btn-secondary">Kembali</a>
-    </form>
-</div>
+<h3>Edit Buku</h3>
+<form method="POST">
+    <div class="mb-3">
+        <label>Kode Buku</label>
+        <input type="text" name="kode_buku" class="form-control" value="<?php echo $data['kode_buku']; ?>" required>
+    </div>
+    <div class="mb-3">
+        <label>Judul Buku</label>
+        <input type="text" name="judul" class="form-control" value="<?php echo $data['judul']; ?>" required>
+    </div>
+    <div class="mb-3">
+        <label>Pengarang</label>
+        <input type="text" name="pengarang" class="form-control" value="<?php echo $data['pengarang']; ?>" required>
+    </div>
+    <div class="mb-3">
+        <label>Stok</label>
+        <input type="number" name="stok" class="form-control" value="<?php echo $data['stok']; ?>" required>
+    </div>
+    <button type="submit" name="update" class="btn btn-warning">Update</button>
+    <a href="buku.php" class="btn btn-secondary">Kembali</a>
+</form>
 
 </div>
 </body>
