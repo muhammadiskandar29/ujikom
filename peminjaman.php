@@ -33,41 +33,59 @@ $query = mysqli_query($conn, "SELECT p.*, a.nama AS nama_anggota, b.judul AS jud
             </tr>
         </thead>
         <tbody>
-            <?php if (mysqli_num_rows($query) > 0): ?>
-                <?php $no = 1; while ($row = mysqli_fetch_assoc($query)): ?>
+            <?php
+            $cek_data = mysqli_num_rows($query);
+            if ($cek_data > 0) {
+                $no = 1;
+                while ($data = mysqli_fetch_array($query)) {
+            ?>
                     <tr>
-                        <td><?= $no++; ?></td>
-                        <td><b><?= $row['nama_anggota']; ?></b></td>
-                        <td><?= $row['judul_buku']; ?></td>
-                        <td><?= $row['tanggal_pinjam']; ?></td>
-                        <td><span class="text-danger fw-bold"><?= $row['jatuh_tempo']; ?></span></td>
-                        <td><?= $row['tanggal_kembali'] ? $row['tanggal_kembali'] : '-'; ?></td>
+                        <td><?php echo $no++; ?></td>
+                        <td><b><?php echo $data['nama_anggota']; ?></b></td>
+                        <td><?php echo $data['judul_buku']; ?></td>
+                        <td><?php echo $data['tanggal_pinjam']; ?></td>
+                        <td><span class="text-danger fw-bold"><?php echo $data['jatuh_tempo']; ?></span></td>
                         <td>
-                            <span class="badge <?= ($row['status'] == 'Dipinjam') ? 'bg-warning text-dark' : 'bg-success'; ?>">
-                                <?= $row['status']; ?>
-                            </span>
+                            <?php
+                            if ($data['tanggal_kembali'] != "") {
+                                echo $data['tanggal_kembali'];
+                            } else {
+                                echo "-";
+                            }
+                            ?>
                         </td>
                         <td>
-                            <?php if ($row['denda'] > 0): ?>
-                                <span class="text-danger fw-bold">Rp <?= number_format($row['denda'], 0, ',', '.'); ?></span>
-                            <?php else: ?>
+                            <?php if ($data['status'] == 'Dipinjam') { ?>
+                                <span class="badge bg-warning text-dark"><?php echo $data['status']; ?></span>
+                            <?php } else { ?>
+                                <span class="badge bg-success"><?php echo $data['status']; ?></span>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <?php if ($data['denda'] > 0) { ?>
+                                <span class="text-danger fw-bold">Rp <?php echo number_format($data['denda'], 0, ',', '.'); ?></span>
+                            <?php } else { ?>
                                 <span>Rp 0</span>
-                            <?php endif; ?>
+                            <?php } ?>
                         </td>
                         <td>
-                            <?php if ($row['status'] == 'Dipinjam'): ?>
-                                <a href="pinjam_kembali.php?id=<?= $row['id']; ?>" class="btn btn-success btn-sm w-100" onclick="return confirm('Kembalikan buku ini?')">Kembalikan</a>
-                            <?php else: ?>
+                            <?php if ($data['status'] == 'Dipinjam') { ?>
+                                <a href="pinjam_kembali.php?id=<?php echo $data['id']; ?>" class="btn btn-success btn-sm w-100" onclick="return confirm('Kembalikan buku ini?')">Kembalikan</a>
+                            <?php } else { ?>
                                 <span class="text-muted small">Selesai</span>
-                            <?php endif; ?>
+                            <?php } ?>
                         </td>
                     </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
+            <?php
+                }
+            } else {
+            ?>
                 <tr>
                     <td colspan="9" class="text-center py-3">Belum ada transaksi.</td>
                 </tr>
-            <?php endif; ?>
+            <?php
+            }
+            ?>
         </tbody>
     </table>
 </div>

@@ -6,7 +6,7 @@ if (isset($_POST['simpan'])) {
     $kode_buku = $_POST['kode_buku'];
     $judul     = $_POST['judul'];
     $pengarang = $_POST['pengarang'];
-    $stok      = (int)$_POST['stok'];
+    $stok      = $_POST['stok'];
 
     $sql = "INSERT INTO buku (kode_buku, judul, pengarang, stok) 
             VALUES ('$kode_buku', '$judul', '$pengarang', '$stok')";

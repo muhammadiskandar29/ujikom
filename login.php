@@ -13,7 +13,8 @@ if (isset($_POST['login'])) {
     $password = md5($_POST['password']);
     $query = mysqli_query($conn, "SELECT * FROM user WHERE username='$username' AND password='$password'");
     if (mysqli_num_rows($query) > 0) {
-        $_SESSION['user'] = mysqli_fetch_assoc($query);
+        $data_user = mysqli_fetch_array($query);
+        $_SESSION['user'] = $data_user;
         header("Location: index.php");
         exit();
     } else {
@@ -32,9 +33,9 @@ if (isset($_POST['login'])) {
 <div class="card p-4 shadow-sm" style="width: 350px;">
     <h4 class="text-center mb-3">Login Admin</h4>
 
-    <?php if ($pesan): ?>
-        <div class="alert alert-danger py-2"><?= $pesan; ?></div>
-    <?php endif; ?>
+    <?php if ($pesan != "") { ?>
+        <div class="alert alert-danger py-2"><?php echo $pesan; ?></div>
+    <?php } ?>
 
     <form method="POST">
         <div class="mb-3">

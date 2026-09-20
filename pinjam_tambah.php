@@ -19,8 +19,8 @@ if (isset($_POST['pinjam'])) {
     exit();
 }
 
-$q_anggota = mysqli_query($conn, "SELECT * FROM anggota ORDER BY nama ASC");
-$q_buku    = mysqli_query($conn, "SELECT * FROM buku WHERE stok > 0 ORDER BY judul ASC");
+$query_anggota = mysqli_query($conn, "SELECT * FROM anggota ORDER BY nama ASC");
+$query_buku    = mysqli_query($conn, "SELECT * FROM buku WHERE stok > 0 ORDER BY judul ASC");
 ?>
 
 <div class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
@@ -30,23 +30,23 @@ $q_buku    = mysqli_query($conn, "SELECT * FROM buku WHERE stok > 0 ORDER BY jud
             <label>Pilih Anggota</label>
             <select name="id_anggota" class="form-select" required>
                 <option value="">-- Pilih Anggota --</option>
-                <?php while ($a = mysqli_fetch_assoc($q_anggota)): ?>
-                    <option value="<?= $a['id']; ?>"><?= $a['nomor_anggota']; ?> - <?= $a['nama']; ?></option>
-                <?php endwhile; ?>
+                <?php while ($data_anggota = mysqli_fetch_array($query_anggota)) { ?>
+                    <option value="<?php echo $data_anggota['id']; ?>"><?php echo $data_anggota['nomor_anggota']; ?> - <?php echo $data_anggota['nama']; ?></option>
+                <?php } ?>
             </select>
         </div>
         <div class="mb-3">
             <label>Pilih Buku</label>
             <select name="id_buku" class="form-select" required>
                 <option value="">-- Pilih Buku --</option>
-                <?php while ($b = mysqli_fetch_assoc($q_buku)): ?>
-                    <option value="<?= $b['id']; ?>"><?= $b['judul']; ?> (Stok: <?= $b['stok']; ?>)</option>
-                <?php endwhile; ?>
+                <?php while ($data_buku = mysqli_fetch_array($query_buku)) { ?>
+                    <option value="<?php echo $data_buku['id']; ?>"><?php echo $data_buku['judul']; ?> (Stok: <?php echo $data_buku['stok']; ?>)</option>
+                <?php } ?>
             </select>
         </div>
         <div class="mb-3">
             <label>Tanggal Pinjam</label>
-            <input type="date" name="tanggal_pinjam" class="form-control" value="<?= date('Y-m-d'); ?>" required>
+            <input type="date" name="tanggal_pinjam" class="form-control" value="<?php echo date('Y-m-d'); ?>" required>
             <small class="text-muted">Batas pengembalian otomatis +3 hari.</small>
         </div>
         <button type="submit" name="pinjam" class="btn btn-primary">Proses Pinjam</button>

@@ -1,5 +1,7 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
@@ -22,7 +24,7 @@ if (!isset($_SESSION['user'])) {
             <a class="nav-link" href="peminjaman.php">Peminjaman Buku</a>
         </div>
         <div class="text-white d-flex align-items-center gap-3">
-            <span>Halo, <b><?= $_SESSION['user']['nama']; ?></b></span>
+            <span>Halo, <b><?php echo $_SESSION['user']['nama']; ?></b></span>
             <a href="logout.php" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin logout?')">Logout</a>
         </div>
     </div>
