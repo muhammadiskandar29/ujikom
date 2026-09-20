@@ -1,93 +1,82 @@
 <?php
-$page_title = "Tambah Siswa Baru";
-require_once 'includes/header.php';
+include 'koneksi.php';
+include 'navbar.php';
+
+$pesan = "";
+
+// Proses Simpan Data
+if (isset($_POST['simpan'])) {
+    $nis           = mysqli_real_escape_string($conn, trim($_POST['nis']));
+    $nama          = mysqli_real_escape_string($conn, trim($_POST['nama']));
+    $password      = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : password_hash('123456', PASSWORD_DEFAULT);
+    $jenis_kelamin = $_POST['jenis_kelamin'];
+    $jurusan       = $_POST['jurusan'];
+    $alamat        = mysqli_real_escape_string($conn, trim($_POST['alamat']));
+    $created_by    = $_SESSION['user']['nama'];
+
+    // Cek duplikasi NIS
+    $cek = mysqli_query($conn, "SELECT id FROM siswa WHERE nis = '$nis'");
+    if (mysqli_num_rows($cek) > 0) {
+        $pesan = "NIS sudah terdaftar!";
+    } else {
+        $query = "INSERT INTO siswa (nis, nama, password, jenis_kelamin, jurusan, alamat, is_delete, created_by) 
+                  VALUES ('$nis', '$nama', '$password', '$jenis_kelamin', '$jurusan', '$alamat', 0, '$created_by')";
+        if (mysqli_query($conn, $query)) {
+            echo "<script>alert('Data berhasil disimpan!'); window.location='index.php';</script>";
+            exit();
+        } else {
+            $pesan = "Gagal menyimpan data!";
+        }
+    }
+}
 ?>
 
 <div class="row justify-content-center">
-    <div class="col-lg-8">
-        <!-- Breadcrumb / Tombol Kembali -->
-        <div class="mb-3">
-            <a href="index.php" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Siswa
-            </a>
-        </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+            <h4 class="mb-3">Tambah Siswa</h4>
 
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white py-3">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-person-plus-fill me-2"></i>Form Tambah Data Siswa
-                </h5>
-            </div>
-            <div class="card-body p-4">
-                <form action="proses_tambah.php" method="POST">
-                    <!-- NIS -->
-                    <div class="mb-3">
-                        <label for="nis" class="form-label fw-semibold">NIS (Nomor Induk Siswa) <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nis" name="nis" placeholder="Contoh: 1004" required autofocus>
-                        <div class="form-text">Pastikan nomor induk siswa unik dan belum terdaftar.</div>
-                    </div>
+            <?php if (!empty($pesan)): ?>
+                <div class="alert alert-danger py-2"><?= $pesan; ?></div>
+            <?php endif; ?>
 
-                    <!-- Nama Lengkap -->
-                    <div class="mb-3">
-                        <label for="nama" class="form-label fw-semibold">Nama Lengkap (User Login) <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama lengkap siswa" required>
-                        <div class="form-text">Nama ini juga akan digunakan sebagai username saat login.</div>
-                    </div>
-
-                    <!-- Password Akun -->
-                    <div class="mb-3">
-                        <label for="password" class="form-label fw-semibold">Password Akun</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Default: 123456 (kosongkan jika ingin default)">
-                        <div class="form-text text-muted">Jika dikosongkan, password otomatis menjadi <code>123456</code>.</div>
-                    </div>
-
-                    <!-- Jenis Kelamin -->
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold d-block">Jenis Kelamin <span class="text-danger">*</span></label>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk_l" value="Laki-laki" required>
-                            <label class="form-check-label" for="jk_l">
-                                <i class="bi bi-gender-male text-primary"></i> Laki-laki
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk_p" value="Perempuan" required>
-                            <label class="form-check-label" for="jk_p">
-                                <i class="bi bi-gender-female text-danger"></i> Perempuan
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Jurusan -->
-                    <div class="mb-3">
-                        <label for="jurusan" class="form-label fw-semibold">Kompetensi Keahlian / Jurusan <span class="text-danger">*</span></label>
-                        <select class="form-select" id="jurusan" name="jurusan" required>
-                            <option value="" disabled selected>-- Pilih Jurusan --</option>
-                            <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak (RPL)</option>
-                            <option value="Teknik Komputer & Jaringan">Teknik Komputer & Jaringan (TKJ)</option>
-                            <option value="Multimedia">Multimedia (MM) / DKV</option>
-                            <option value="Akuntansi & Keuangan">Akuntansi & Keuangan (AKL)</option>
-                            <option value="Otomatisasi & Tata Kelola Perkantoran">Otomatisasi Perkantoran (OTKP)</option>
-                        </select>
-                    </div>
-
-                    <!-- Alamat -->
-                    <div class="mb-4">
-                        <label for="alamat" class="form-label fw-semibold">Alamat</label>
-                        <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Masukkan alamat domisili siswa..."></textarea>
-                    </div>
-
-                    <!-- Tombol Aksi -->
-                    <div class="d-flex justify-content-end gap-2">
-                        <a href="index.php" class="btn btn-secondary">Batal</a>
-                        <button type="submit" name="submit" class="btn btn-primary px-4">
-                            <i class="bi bi-save me-1"></i> Simpan Data
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">NIS</label>
+                    <input type="text" name="nis" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nama Lengkap (User Login)</label>
+                    <input type="text" name="nama" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password (Default: 123456)</label>
+                    <input type="password" name="password" class="form-control" placeholder="Kosongkan jika default 123456">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label d-block">Jenis Kelamin</label>
+                    <input type="radio" name="jenis_kelamin" value="Laki-laki" checked> Laki-laki &nbsp;
+                    <input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jurusan</label>
+                    <select name="jurusan" class="form-select" required>
+                        <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak (RPL)</option>
+                        <option value="Teknik Komputer & Jaringan">Teknik Komputer & Jaringan (TKJ)</option>
+                        <option value="Multimedia">Multimedia (MM)</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Alamat</label>
+                    <textarea name="alamat" class="form-control" rows="2"></textarea>
+                </div>
+                <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
+                <a href="index.php" class="btn btn-secondary">Kembali</a>
+            </form>
         </div>
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+</div>
+</body>
+</html>

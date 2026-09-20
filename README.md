@@ -1,96 +1,54 @@
-# SIM Siswa - Aplikasi CRUD Standar PHP Native & Bootstrap 5
+# SIM Perpustakaan Siswa (CRUD PHP Native & Bootstrap)
 
-Aplikasi manajemen data siswa sederhana berbasis **PHP Native** dan **Bootstrap 5**, dilengkapi dengan sistem **Session Login Siswa**, **Soft Delete (`is_delete`)**, dan **Audit Trail** (`created_at`, `created_by`, `updated_at`, `updated_by`).
+Project CRUD standar sederhana yang sangat mudah dipelajari untuk pemula maupun ujian kompetensi (Ujikom).
 
 ---
 
 ## 🚀 Fitur Utama
-1. **Sistem Login & Session**:
-   - Login menggunakan **Nama Siswa** dan **Password**.
-   - Session login siswa dengan proteksi halaman terpusat.
-   - Fitur logout untuk mengakhiri sesi.
-2. **Soft Delete (`is_delete`)**:
-   - Data yang dihapus tidak langsung hilang dari database, melainkan ditandai dengan `is_delete = 1`.
-   - Data yang tampil di halaman utama hanya data yang aktif (`is_delete = 0`).
-3. **Audit Trail**:
-   - `created_at`: Waktu data pertama kali dibuat.
-   - `created_by`: Nama user/siswa yang membuat data tersebut.
-   - `updated_at`: Waktu data terakhir diubah / dihapus.
-   - `updated_by`: Nama user/siswa yang mengubah / menghapus data tersebut.
-4. **CRUD Lengkap**:
-   - **Create**: Tambah siswa baru dengan password akun.
-   - **Read**: Tampil data siswa dengan status dan riwayat audit.
-   - **Update**: Edit data siswa dan ubah password (opsional).
-   - **Delete**: Hapus siswa dengan metode soft delete dan konfirmasi.
-   - **Search**: Pencarian instan berdasarkan NIS, Nama, atau Jurusan.
+1. **Login Session**: Login dengan Nama Siswa & Password (default: `123456`).
+2. **Master Siswa**: Tambah, Tampil, Cari, Edit, dan Hapus Siswa.
+3. **Master Buku**: Tambah, Tampil, Cari, Edit, dan Hapus Buku (stok siap untuk transaksi).
+4. **Soft Delete (`is_delete`)**: Data tidak hilang permanen, hanya statusnya diubah menjadi `1`.
+5. **Audit Trail**: Mencatat pembuat (`created_by`, `created_at`) dan pengubah (`updated_by`, `updated_at`).
 
 ---
 
-## 🔑 Akun Login Bawaan (Default Dummy)
-Setelah mengimport `database.sql`, Anda dapat login menggunakan salah satu akun berikut:
-
-| Nama Siswa (Username) | Password | Peran / Jurusan |
-| :--- | :--- | :--- |
-| **Ahmad Pratama** | `123456` | Rekayasa Perangkat Lunak |
-| **Siti Nurhaliza** | `123456` | Teknik Komputer & Jaringan |
-| **Budi Santoso** | `123456` | Multimedia |
-
----
-
-## 📁 Struktur Folder
+## 📁 Struktur File (Sangat Ringkas)
 ```text
 ujikom/
-├── config/
-│   └── database.php       # Konfigurasi koneksi MySQLi
-├── includes/
-│   ├── header.php         # Proteksi session, navbar & Bootstrap CSS
-│   └── footer.php         # Footer & Bootstrap JS
-├── .gitignore             # File ignore Git
-├── database.sql           # File SQL skema & data awal
-├── edit.php               # Form edit data
-├── hapus.php              # Logika proses soft delete
-├── index.php              # Halaman utama (daftar data & pencarian)
-├── login.php              # Halaman login siswa
-├── logout.php             # Logika logout session
-├── proses_edit.php        # Logika simpan perubahan & audit trail
-├── proses_login.php       # Validasi login & set session
-├── proses_tambah.php      # Logika simpan data baru & hash password
-├── tambah.php             # Form tambah siswa baru
-└── README.md              # Dokumentasi project
+├── koneksi.php          # Koneksi MySQLi
+├── navbar.php           # Navigasi & pengecekan login
+├── database.sql         # File SQL database db_ujikom
+│
+├── login.php            # Halaman login (form + proses langsung)
+├── logout.php           # Logout session
+│
+├── index.php            # Data Siswa (Tampil & Cari)
+├── tambah.php           # Tambah Siswa (Form + Simpan)
+├── edit.php             # Edit Siswa (Form + Update)
+├── hapus.php            # Hapus Siswa (Soft Delete)
+│
+├── buku.php             # Data Buku (Tampil & Cari)
+├── buku_tambah.php      # Tambah Buku (Form + Simpan)
+├── buku_edit.php        # Edit Buku (Form + Update)
+├── buku_hapus.php       # Hapus Buku (Soft Delete)
+│
+├── .gitignore           # File ignore Git
+└── README.md            # Dokumentasi ini
 ```
 
 ---
 
-## 🛠️ Panduan Instalasi & Menjalankan
-
-### 1. Nyalakan XAMPP
-Buka **XAMPP Control Panel**, lalu klik **Start** pada modul:
-- **Apache**
-- **MySQL**
-
-### 2. Import Database
-1. Buka browser ke: [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
-2. Klik database `db_ujikom` (jika sudah ada sebelumnya, bisa drop database atau tabel `siswa` lama terlebih dahulu).
-3. Klik menu **Import**, pilih file `database.sql`.
-4. Klik tombol **Kirim / Import**.
-
-### 3. Jalankan Aplikasi
-Buka browser dan akses:
-```text
-http://localhost/ujikom
-```
-*(Akan otomatis diarahkan ke `login.php` jika belum login)*
+## 🔑 Akun Login Uji Coba
+| Nama Siswa (Username) | Password |
+| :--- | :--- |
+| **Ahmad Pratama** | `123456` |
+| **Siti Nurhaliza** | `123456` |
+| **Budi Santoso** | `123456` |
 
 ---
 
-## 🐙 Panduan Push ke Git (GitHub / GitLab)
-
-File `.gitignore` sudah otomatis disediakan. Jalankan perintah berikut di terminal:
-```bash
-git init
-git add .
-git commit -m "feat: auth session login, soft delete, dan audit trail"
-git branch -M main
-git remote add origin <URL_REPOSITORY_ANDA>
-git push -u origin main
-```
+## 🛠️ Cara Menjalankan
+1. Nyalakan **Apache** dan **MySQL** di XAMPP.
+2. Buka [http://localhost/phpmyadmin](http://localhost/phpmyadmin) dan import file `database.sql`.
+3. Buka browser ke: [http://localhost/ujikom](http://localhost/ujikom)
