@@ -5,10 +5,24 @@ include 'sidebar.php';
 // simpan data petugas baru
 if (isset($_POST['simpan'])) {
     extract($_POST);
-    $pass = md5($password);
-
-    mysqli_query($conn, "INSERT INTO tb_petugas VALUES ('$id_petugas', '$username', '$pass', '$nama_petugas', '$level')");
-    header("Location: petugas.php");
+    
+    // validasi cek apakah ID Petugas atau Username sudah terdaftar
+    $cek = mysqli_query($conn, "SELECT * FROM tb_petugas WHERE id_petugas='$id_petugas' OR username='$username'");
+    if (mysqli_num_rows($cek) > 0) {
+        echo "<script>
+                alert('Gagal! ID Petugas ($id_petugas) atau Username ($username) sudah digunakan.');
+                window.location.href = 'petugas_tambah.php';
+              </script>";
+    } else {
+        $pass = md5($password);
+        $simpan = mysqli_query($conn, "INSERT INTO tb_petugas VALUES ('$id_petugas', '$username', '$pass', '$nama_petugas', '$level')");
+        if ($simpan) {
+            echo "<script>
+                    alert('Data Petugas berhasil disimpan!');
+                    window.location.href = 'petugas.php';
+                  </script>";
+        }
+    }
 }
 ?>
 

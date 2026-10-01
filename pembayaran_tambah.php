@@ -5,13 +5,28 @@ include 'sidebar.php';
 // simpan transaksi pembayaran
 if (isset($_POST['bayar'])) {
     extract($_POST);
-    $kembalian = $jumlah_bayar - $nominal_bayar;
     
-    $d = mysqli_fetch_array(mysqli_query($conn, "SELECT id_spp FROM tb_siswa WHERE nisn='$nisn'"));
-    
-    mysqli_query($conn, "INSERT INTO tb_pembayaran VALUES ('$id_pembayaran', '$nisn', '$tgl_bayar', '$tgl_bayar', '$batas_pembayaran', '$jumlah_bulan', '$d[id_spp]', '$nominal_bayar', '$jumlah_bayar', '$kembalian', 'sudah lunas')");
-    mysqli_query($conn, "UPDATE cek_pembayaran SET tgl_terakhir_bayar='$tgl_bayar', tgl_sekarang='$tgl_bayar', status_pembayaran='sudah lunas', jumlah_bulan='$jumlah_bulan' WHERE nisn='$nisn'");
-    header("Location: pembayaran.php");
+    // validasi cek apakah ID Pembayaran sudah terdaftar
+    $cek = mysqli_query($conn, "SELECT * FROM tb_pembayaran WHERE id_pembayaran='$id_pembayaran'");
+    if (mysqli_num_rows($cek) > 0) {
+        echo "<script>
+                alert('Gagal! ID Pembayaran $id_pembayaran sudah pernah digunakan.');
+                window.location.href = 'pembayaran_tambah.php';
+              </script>";
+    } else {
+        $kembalian = $jumlah_bayar - $nominal_bayar;
+        $d = mysqli_fetch_array(mysqli_query($conn, "SELECT id_spp FROM tb_siswa WHERE nisn='$nisn'"));
+        
+        $simpan = mysqli_query($conn, "INSERT INTO tb_pembayaran VALUES ('$id_pembayaran', '$nisn', '$tgl_bayar', '$tgl_bayar', '$batas_pembayaran', '$jumlah_bulan', '$d[id_spp]', '$nominal_bayar', '$jumlah_bayar', '$kembalian', 'sudah lunas')");
+        mysqli_query($conn, "UPDATE cek_pembayaran SET tgl_terakhir_bayar='$tgl_bayar', tgl_sekarang='$tgl_bayar', status_pembayaran='sudah lunas', jumlah_bulan='$jumlah_bulan' WHERE nisn='$nisn'");
+        
+        if ($simpan) {
+            echo "<script>
+                    alert('Transaksi pembayaran berhasil disimpan!');
+                    window.location.href = 'pembayaran.php';
+                  </script>";
+        }
+    }
 }
 ?>
 

@@ -4,8 +4,23 @@ include 'sidebar.php';
 
 if (isset($_POST['simpan'])) {
     extract($_POST);
-    mysqli_query($conn, "INSERT INTO tb_spp VALUES ('$id_spp', '$tahun', '$nominal')");
-    header("Location: spp.php");
+    
+    // validasi cek apakah ID SPP sudah terdaftar
+    $cek = mysqli_query($conn, "SELECT * FROM tb_spp WHERE id_spp='$id_spp'");
+    if (mysqli_num_rows($cek) > 0) {
+        echo "<script>
+                alert('Gagal! ID SPP $id_spp sudah terdaftar di sistem.');
+                window.location.href = 'spp_tambah.php';
+              </script>";
+    } else {
+        $simpan = mysqli_query($conn, "INSERT INTO tb_spp VALUES ('$id_spp', '$tahun', '$nominal')");
+        if ($simpan) {
+            echo "<script>
+                    alert('Data SPP berhasil disimpan!');
+                    window.location.href = 'spp.php';
+                  </script>";
+        }
+    }
 }
 ?>
 

@@ -6,17 +6,31 @@ include 'sidebar.php';
 if (isset($_POST['simpan'])) {
     extract($_POST);
     
-    // ambil nama kelas berdasarkan id kelas yang dipilih
-    $k = mysqli_fetch_array(mysqli_query($conn, "SELECT nama_kelas FROM tb_kelas WHERE id_kelas='$id_kelas'"));
-    $nama_kelas = $k['nama_kelas'];
-    
-    // simpan data ke tabel siswa
-    mysqli_query($conn, "INSERT INTO tb_siswa VALUES ('$nisn', '$nis', '$nama', '$id_kelas', '$nama_kelas', '$alamat', '$no_tlp', '$id_spp')");
-    
-    // inisialisasi status tagihan pertama di cek_pembayaran jadi belum lunas
-    mysqli_query($conn, "INSERT INTO cek_pembayaran VALUES ('$nisn', NULL, '" . date('Y-m-d') . "', 'belum lunas', '0', '$nama', '$no_tlp')");
-    
-    header("Location: siswa.php");
+    // validasi cek apakah NISN atau No Telepon sudah terdaftar
+    $cek = mysqli_query($conn, "SELECT * FROM tb_siswa WHERE nisn='$nisn' OR no_tlp='$no_tlp'");
+    if (mysqli_num_rows($cek) > 0) {
+        echo "<script>
+                alert('Gagal! NISN ($nisn) atau No Telepon ($no_tlp) sudah terdaftar di sistem.');
+                window.location.href = 'siswa_tambah.php';
+              </script>";
+    } else {
+        // ambil nama kelas berdasarkan id kelas yang dipilih
+        $k = mysqli_fetch_array(mysqli_query($conn, "SELECT nama_kelas FROM tb_kelas WHERE id_kelas='$id_kelas'"));
+        $nama_kelas = $k['nama_kelas'];
+        
+        // simpan data ke tabel siswa
+        $simpan = mysqli_query($conn, "INSERT INTO tb_siswa VALUES ('$nisn', '$nis', '$nama', '$id_kelas', '$nama_kelas', '$alamat', '$no_tlp', '$id_spp')");
+        
+        // inisialisasi status tagihan pertama di cek_pembayaran jadi belum lunas
+        mysqli_query($conn, "INSERT INTO cek_pembayaran VALUES ('$nisn', NULL, '" . date('Y-m-d') . "', 'belum lunas', '0', '$nama', '$no_tlp')");
+        
+        if ($simpan) {
+            echo "<script>
+                    alert('Data siswa berhasil disimpan!');
+                    window.location.href = 'siswa.php';
+                  </script>";
+        }
+    }
 }
 ?>
 

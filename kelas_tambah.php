@@ -5,8 +5,23 @@ include 'sidebar.php';
 // simpan data kelas baru
 if (isset($_POST['simpan'])) {
     extract($_POST);
-    mysqli_query($conn, "INSERT INTO tb_kelas VALUES ('$id_kelas', '$nama_kelas', '$komp_keahlian')");
-    header("Location: kelas.php");
+    
+    // validasi cek apakah ID Kelas atau Nama Kelas sudah terdaftar
+    $cek = mysqli_query($conn, "SELECT * FROM tb_kelas WHERE id_kelas='$id_kelas' OR nama_kelas='$nama_kelas'");
+    if (mysqli_num_rows($cek) > 0) {
+        echo "<script>
+                alert('Gagal! ID Kelas ($id_kelas) atau Nama Kelas ($nama_kelas) sudah terdaftar di sistem.');
+                window.location.href = 'kelas_tambah.php';
+              </script>";
+    } else {
+        $simpan = mysqli_query($conn, "INSERT INTO tb_kelas VALUES ('$id_kelas', '$nama_kelas', '$komp_keahlian')");
+        if ($simpan) {
+            echo "<script>
+                    alert('Data Kelas berhasil disimpan!');
+                    window.location.href = 'kelas.php';
+                  </script>";
+        }
+    }
 }
 ?>
 
