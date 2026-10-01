@@ -53,10 +53,10 @@ $level_user   = $_SESSION['user']['level'] ?? 'Admin';
                 <span class="text-muted small px-3 fw-bold">TRANSAKSI</span>
             </li>
             <li>
-                <a href="pembayaran.php" class="nav-link <?= strpos($current_page, 'pembayaran.php') !== false || strpos($current_page, 'pembayaran_tambah.php') !== false ? 'active' : '' ?>">Transaksi Pembayaran</a>
+                <a href="pembayaran.php" class="nav-link <?= in_array($current_page, ['pembayaran.php', 'pembayaran_tambah.php', 'pembayaran_detail.php']) ? 'active' : '' ?>">Transaksi Pembayaran</a>
             </li>
             <li>
-                <a href="cek_pembayaran.php" class="nav-link <?= strpos($current_page, 'cek_pembayaran') !== false ? 'active' : '' ?>">Cek Pembayaran</a>
+                <a href="cek_pembayaran.php" class="nav-link <?= $current_page == 'cek_pembayaran.php' ? 'active' : '' ?>">Cek Pembayaran</a>
             </li>
         </ul>
         
